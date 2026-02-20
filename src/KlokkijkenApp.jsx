@@ -78,6 +78,20 @@ const AnalogClock = ({ hours, minutes, size = 180, interactive = false, showNumb
 
   const minuteLen = r * 0.82;
   const hourLen = r * 0.58;
+  const handWidth = size * 0.035;
+  const handColor = "#4a3728";
+  const lightenHex = (hex, percent) => {
+    const h = hex.replace('#', '');
+    const num = parseInt(h, 16);
+    let r = (num >> 16) + Math.round(255 * (percent / 100));
+    let g = ((num >> 8) & 0x00ff) + Math.round(255 * (percent / 100));
+    let b = (num & 0x0000ff) + Math.round(255 * (percent / 100));
+    r = Math.min(255, Math.max(0, r));
+    g = Math.min(255, Math.max(0, g));
+    b = Math.min(255, Math.max(0, b));
+    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+  };
+  const handAccent = lightenHex(handColor, 28);
 
   const polarToCart = (angle, len) => ({
     x: cx + len * Math.cos((angle * Math.PI) / 180),
@@ -155,21 +169,21 @@ const AnalogClock = ({ hours, minutes, size = 180, interactive = false, showNumb
       <line
         x1={cx} y1={cy}
         x2={hrEnd.x} y2={hrEnd.y}
-        stroke="#4a3728"
-        strokeWidth={size * 0.04}
+        stroke={handColor}
+        strokeWidth={handWidth}
         strokeLinecap="round"
       />
       {/* Minute hand */}
       <line
         x1={cx} y1={cy}
         x2={minEnd.x} y2={minEnd.y}
-        stroke="#c0392b"
-        strokeWidth={size * 0.025}
+        stroke={handColor}
+        strokeWidth={handWidth}
         strokeLinecap="round"
       />
       {/* Center dot */}
-      <circle cx={cx} cy={cy} r={size * 0.028} fill="#4a3728" />
-      <circle cx={cx} cy={cy} r={size * 0.015} fill="#c0392b" />
+      <circle cx={cx} cy={cy} r={size * 0.028} fill={handColor} />
+      <circle cx={cx} cy={cy} r={size * 0.015} fill={handAccent} />
     </svg>
   );
 };
