@@ -76,8 +76,8 @@ const AnalogClock = ({ hours, minutes, size = 180, interactive = false, showNumb
   const minuteAngle = (minutes / 60) * 360 - 90;
   const hourAngle = ((hours % 12) / 12) * 360 + (minutes / 60) * 30 - 90;
 
-  const minuteLen = r * 0.82;
-  const hourLen = r * 0.58;
+  const minuteLen = r * 0.78;
+  const hourLen = r * 0.52;
   const handWidth = size * 0.035;
   const handColor = "#4a3728";
   const lightenHex = (hex, percent) => {
@@ -163,8 +163,6 @@ const AnalogClock = ({ hours, minutes, size = 180, interactive = false, showNumb
       <circle cx={cx} cy={cy} r={r} fill={`url(#face-${size})`} />
       {/* Ticks */}
       {tickMarks}
-      {/* Numbers */}
-      {numbers}
       {/* Hour hand */}
       <line
         x1={cx} y1={cy}
@@ -177,13 +175,15 @@ const AnalogClock = ({ hours, minutes, size = 180, interactive = false, showNumb
       <line
         x1={cx} y1={cy}
         x2={minEnd.x} y2={minEnd.y}
-        stroke={handColor}
+        stroke={handAccent}
         strokeWidth={handWidth}
         strokeLinecap="round"
       />
       {/* Center dot */}
       <circle cx={cx} cy={cy} r={size * 0.028} fill={handColor} />
       <circle cx={cx} cy={cy} r={size * 0.015} fill={handAccent} />
+      {/* Numbers (rendered last so hands don't overlap them) */}
+      {numbers}
     </svg>
   );
 };
